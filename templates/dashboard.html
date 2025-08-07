@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            background-color: #0d6efd;
+            color: white;
+            width: 220px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 22px;
+            text-align: center;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        .main-content h1 {
+            color: #0d6efd;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .stats-box {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .stats-box:hover {
+            transform: translateY(-5px);
+        }
+        .stats-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #555;
+        }
+        .stats-box p {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .recent-attendance {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .recent-attendance h3 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .attendance-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .attendance-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            color: #333;
+        }
+        .attendance-list li:last-child {
+            border-bottom: none;
+        }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+            }
+            .sidebar h2 {
+                display: none;
+            }
+            .sidebar a {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Admin</h2>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('register_student') }}">Register Student</a>
+        <a href="{{ url_for('mark_attendance') }}">Mark Attendance</a>
+        <a href="{{ url_for('view_attendance') }}">View Attendance</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+    <div class="main-content">
+        <h1>Admin Dashboard</h1>
+
+        <div class="stats-box">
+            <h3>Total Registered Students</h3>
+            <p>{{ total_students }}</p>
+        </div>
+
+        <div class="recent-attendance">
+            <h3>Recent Attendance</h3>
+            <ul class="attendance-list">
+                {% for record in recent_attendance %}
+                    <li>{{ record.name }} — {{ record.timestamp.strftime("%Y-%m-%d %H:%M") }}</li>
+                {% else %}
+                    <li>No attendance records yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
